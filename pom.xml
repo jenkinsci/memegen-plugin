@@ -1,74 +1,85 @@
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>org.jenkins-ci.plugins</groupId>
-		<artifactId>plugin</artifactId>
-		<version>1.428</version>
-		<relativePath>../pom.xml</relativePath>
-	</parent>
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.jenkins-ci.plugins</groupId>
+        <artifactId>plugin</artifactId>
+        <version>1.428</version>
+    </parent>
 
-	<groupId>hudson.plugins.memegen</groupId>
-	<artifactId>memegen</artifactId>
-	<version>0.5.0-SNAPSHOT</version>
-	<packaging>hpi</packaging>
-	<name>Meme Generator</name>
-	<url>http://wiki.jenkins-ci.org/display/JENKINS/Meme+Generator+Plugin</url>
+    <groupId>hudson.plugins.memegen</groupId>
+    <artifactId>memegen</artifactId>
+    <version>0.5.0-SNAPSHOT</version>
+    <packaging>hpi</packaging>
+    <name>Meme Generator</name>
+    <url>http://wiki.jenkins-ci.org/display/JENKINS/Meme+Generator+Plugin</url>
 
-	<scm>
-		<connection>scm:git:ssh://github.com/jenkinsci/memegen-plugin.git</connection>
-		<developerConnection>scm:git:ssh://git@github.com/jenkinsci/memegen-plugin.git</developerConnection>
-		<url>https://github.com/jenkinsci/memegen</url>
-	</scm>
+    <scm>
+        <connection>scm:git:ssh://github.com/jenkinsci/memegen-plugin.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/jenkinsci/memegen-plugin.git</developerConnection>
+        <url>https://github.com/jenkinsci/memegen</url>
+    </scm>
 
-	<properties>
-    <!-- which version of Hudson is this plugin built against? -->
-		<hudson.version>${project.parent.version}</hudson.version>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<java.net.id>joonty</java.net.id>
-	</properties>
+    <properties>
+        <!-- which version of Hudson is this plugin built against? -->
+        <hudson.version>${project.parent.version}</hudson.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.net.id>joonty</java.net.id>
+    </properties>
 
-	<developers>
-		<developer>
-			<id>joonty</id>
-			<email>jon@joncairns.com</email>
-			<name>Jon Cairns</name>
-			<timezone>0</timezone>
-		</developer>
-	</developers>
+    <developers>
+        <developer>
+            <id>joonty</id>
+            <email>jon@joncairns.com</email>
+            <name>Jon Cairns</name>
+            <timezone>0</timezone>
+        </developer>
+    </developers>
 
-	<licenses>
-		<license>
-			<distribution>repo</distribution>
-			<name>The MIT License</name>
-			<url>http://www.opensource.org/licenses/mit-license.php</url>
-		</license>
-	</licenses>
+    <licenses>
+        <license>
+            <distribution>repo</distribution>
+            <name>The MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
+        </license>
+    </licenses>
 
-	<dependencies>
-		<dependency>
-			<groupId>commons-httpclient</groupId>
-			<artifactId>commons-httpclient</artifactId>
-			<version>3.1</version>
-		</dependency>
-		<dependency>
-			<groupId>com.googlecode.json-simple</groupId>
-			<artifactId>json-simple</artifactId>
-			<version>1.1</version>
-		</dependency>
-	</dependencies>
+    <dependencies>
+        <dependency>
+            <groupId>commons-httpclient</groupId>
+            <artifactId>commons-httpclient</artifactId>
+            <version>3.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.googlecode.json-simple</groupId>
+            <artifactId>json-simple</artifactId>
+            <version>1.1</version>
+        </dependency>
+    </dependencies>
 
-	<repositories>
-		<repository>
-			<id>repo.jenkins-ci.org</id>
-			<url>http://repo.jenkins-ci.org/public/</url>
-		</repository>
-	</repositories>
+    <repositories>
+        <repository>
+            <id>repo.jenkins-ci.org</id>
+            <url>http://repo.jenkins-ci.org/public/</url>
+        </repository>
+    </repositories>
 
-	<pluginRepositories>
-		<pluginRepository>
-			<id>repo.jenkins-ci.org</id>
-			<url>http://repo.jenkins-ci.org/public/</url>
-		</pluginRepository>
-	</pluginRepositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>repo.jenkins-ci.org</id>
+            <url>http://repo.jenkins-ci.org/public/</url>
+        </pluginRepository>
+    </pluginRepositories>
+        
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.1</version>
+                <configuration>
+                    <goals>deploy</goals>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
