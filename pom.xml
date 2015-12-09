@@ -9,16 +9,16 @@
 
     <groupId>hudson.plugins.memegen</groupId>
     <artifactId>memegen</artifactId>
-    <version>0.5.0</version>
+    <version>0.5.0-SNAPSHOT</version>
     <packaging>hpi</packaging>
     <name>Meme Generator</name>
     <url>http://wiki.jenkins-ci.org/display/JENKINS/Meme+Generator+Plugin</url>
 
     <scm>
-        <connection>scm:git:ssh://github.com/jenkinsci/memegen-plugin.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com/jenkinsci/memegen-plugin.git</developerConnection>
+        <connection>scm:git:git://github.com/jenkinsci/memegen-plugin.git</connection>
+        <developerConnection>scm:git:git://git@github.com/jenkinsci/memegen-plugin.git</developerConnection>
         <url>https://github.com/jenkinsci/memegen</url>
-      <tag>memegen-0.5.0</tag>
+        <tag>memegen-0.5.0</tag>
   </scm>
 
     <properties>
