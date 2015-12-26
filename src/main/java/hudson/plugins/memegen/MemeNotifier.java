@@ -65,28 +65,45 @@ public class MemeNotifier extends Notifier {
             if (((DescriptorImpl) getDescriptor()).isBuildDescriptionEnabled()) {
                 addToBuildDescription(build, meme);
             }
+            /* We have to add meme to the root project, otherwise 
+             * 	we'll get an exception on multi-config projects
+             */
             AbstractProject proj = build.getProject();
-            addToProjectDescription(proj, meme);
+            AbstractProject root = proj.getRootProject();
+            addToProjectDescription(root, meme);
         } catch (NoMemesException nme) {
-            LOGGER.log(Level.WARNING, "{0}{1}", new Object[]{"Meme generation failed: ", nme.getMessage()});
+            LOGGER.log(Level.WARNING, "{0}{1}", new Object[]{"Meme generation failed (nme): ", nme.getMessage()});
             output.println("There are no memes to use! Please add some in the Jenkins configuration page.");
         } catch (IOException ie) {
-            LOGGER.log(Level.WARNING, "{0}{1}", new Object[]{"Meme generation failed: ", ie.getMessage()});
+            LOGGER.log(Level.WARNING, "{0}{1}", new Object[]{"Meme generation failed (io): ", ie.getMessage()});
             output.println("Sorry, couldn't create a Meme - check the logs for more detail");
         } catch (Exception e) {
-            LOGGER.log(Level.WARNING, "{0}{1}", new Object[]{"Meme generation failed: ", e.getMessage()});
+            LOGGER.log(Level.WARNING, "{0}{1}", new Object[]{"Meme generation failed (e):", e.getMessage()});
             output.println("Sorry, couldn't create a Meme - check the logs for more detail");
         }
     }
 
     private void addToBuildDescription(AbstractBuild build, Meme meme) throws IOException {
-        build.setDescription("<img class=\"meme-build\" src=\"" + meme.getImageURL() + "\" />");
+        String extra = ((DescriptorImpl) getDescriptor()).getExtraImgParams();
+        String desc = build.getDescription();
+        if (desc == null)
+        	desc = "";
+        System.err.println("Build description was: " + desc);
+        desc = desc.replaceAll("<img class=\"meme\"[^>]+>", "");
+        desc += "<img class=\"meme\" " + extra + " src=\"" + meme.getImageURL() + "\" />";
+        System.err.println("Build description is: " + desc);
+        build.setDescription(desc);
     }
 
     private void addToProjectDescription(AbstractProject proj, Meme meme) throws IOException {
         String desc = proj.getDescription();
+        if (desc == null)
+        	desc = "";
+        System.err.println("Project description was: " + desc);
+        String extra = ((DescriptorImpl) getDescriptor()).getExtraImgParams();
         desc = desc.replaceAll("<img class=\"meme\"[^>]+>", "");
-        desc += "<img class=\"meme\" src=\"" + meme.getImageURL() + "\" />";
+        desc += "<img class=\"meme\" " + extra + " src=\"" + meme.getImageURL() + "\" />";
+        System.err.println("Project description is: " + desc);
         proj.setDescription(desc);
     }
 
@@ -121,7 +138,7 @@ public class MemeNotifier extends Notifier {
     public static final class DescriptorImpl extends BuildStepDescriptor<Publisher> {
 
         public boolean buildDescriptionEnabled;
-
+        public String extraImgParams;
         public ArrayList<Meme> smemes = new ArrayList<Meme>();
         public ArrayList<Meme> fmemes = new ArrayList<Meme>();
 
@@ -133,7 +150,11 @@ public class MemeNotifier extends Notifier {
         public boolean isBuildDescriptionEnabled() {
             return buildDescriptionEnabled;
         }
-
+        
+        public String getExtraImgParams() {
+        	return extraImgParams;
+        }
+        
         public ArrayList<Meme> getFailMemes() {
             if (fmemes.isEmpty()) {
                 return getDefaultFailMemes();
@@ -141,7 +162,7 @@ public class MemeNotifier extends Notifier {
                 return fmemes;
             }
         }
-
+        
         public ArrayList<Meme> getSuccessMemes() {
             if (smemes.isEmpty()) {
                 return getDefaultSuccessMemes();
@@ -182,7 +203,10 @@ public class MemeNotifier extends Notifier {
                 System.err.println("Build description is NOT enabled");
                 buildDescriptionEnabled = false;
             }
-
+            
+            extraImgParams = req.getParameter("extraImageSettings");
+            System.err.println("Extra html: " + extraImgParams);
+            
             smemes.clear();
             for (Object data : getArray(json.get("smemes"))) {
                 Meme m = req.bindJSON(Meme.class, (JSONObject) data);
