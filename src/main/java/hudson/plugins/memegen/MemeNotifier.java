@@ -65,16 +65,20 @@ public class MemeNotifier extends Notifier {
             if (((DescriptorImpl) getDescriptor()).isBuildDescriptionEnabled()) {
                 addToBuildDescription(build, meme);
             }
+            /* We have to add meme to the root project, otherwise 
+             * 	we'll get an exception on multi-config projects
+             */
             AbstractProject proj = build.getProject();
-            addToProjectDescription(proj, meme);
+            AbstractProject root = proj.getRootProject();
+            addToProjectDescription(root, meme);
         } catch (NoMemesException nme) {
-            LOGGER.log(Level.WARNING, "{0}{1}", new Object[]{"Meme generation failed: ", nme.getMessage()});
+            LOGGER.log(Level.WARNING, "{0}{1}", new Object[]{"Meme generation failed (nme): ", nme.getMessage()});
             output.println("There are no memes to use! Please add some in the Jenkins configuration page.");
         } catch (IOException ie) {
-            LOGGER.log(Level.WARNING, "{0}{1}", new Object[]{"Meme generation failed: ", ie.getMessage()});
+            LOGGER.log(Level.WARNING, "{0}{1}", new Object[]{"Meme generation failed (io): ", ie.getMessage()});
             output.println("Sorry, couldn't create a Meme - check the logs for more detail");
         } catch (Exception e) {
-            LOGGER.log(Level.WARNING, "{0}{1}", new Object[]{"Meme generation failed: ", e.getMessage()});
+            LOGGER.log(Level.WARNING, "{0}{1}", new Object[]{"Meme generation failed (e):", e.getMessage()});
             output.println("Sorry, couldn't create a Meme - check the logs for more detail");
         }
     }
