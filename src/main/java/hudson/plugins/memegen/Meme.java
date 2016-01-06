@@ -59,7 +59,7 @@ public class Meme implements Serializable {
     }
 
     public String getImageURL() {
-        return "http://apimeme.com/meme?meme=" + identifier + "&top=" + encode(upperText) + "&bottom=" + encode(lowerText);
+        return "http://apimeme.com/meme?meme=" + encode(identifier) + "&top=" + encode(upperText) + "&bottom=" + encode(lowerText);
     }
 
     public Meme clone() {

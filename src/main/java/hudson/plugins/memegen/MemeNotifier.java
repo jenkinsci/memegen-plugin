@@ -151,12 +151,12 @@ public class MemeNotifier extends Notifier {
         }
 
         private ArrayList<Meme> getDefaultSuccessMemes() {
-            smemes.add(new Meme(MemeList.getDefaultMeme(), "But when I do, I win", "I don't always commit"));
+            smemes.add(new Meme(MemeList.DEFAULT_MEME, "But when I do, I win", "I don't always commit"));
             return smemes;
         }
 
         private ArrayList<Meme> getDefaultFailMemes() {
-            fmemes.add(new Meme(MemeList.getDefaultMeme(), "But when I do, I break the build", "I don't always commit"));
+            fmemes.add(new Meme(MemeList.DEFAULT_MEME, "But when I do, I break the build", "I don't always commit"));
             return fmemes;
         }
 
