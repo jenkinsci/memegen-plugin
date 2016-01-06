@@ -29,6 +29,8 @@ package hudson.plugins.memegen;
  */
 public class MemeList {
 
+    public static final String DEFAULT_MEME = "The Most Interesting Man In The World";
+
     public static String[] getMemeList() {
         return new String[]{
             "10 Guy",
@@ -830,9 +832,5 @@ public class MemeList {
             "Zuckerberg",
             "Zura Janai Katsura Da"
         };
-    }
-
-    public static String getDefaultMeme() {
-        return "The Most Interesting Man In The World";
     }
 }
