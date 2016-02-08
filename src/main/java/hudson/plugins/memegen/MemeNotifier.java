@@ -59,7 +59,11 @@ public class MemeNotifier extends Notifier {
 
         try {
             Result res = build.getResult();
-            Meme meme = MemeFactory.getMeme((res == Result.FAILURE) ? ((DescriptorImpl) getDescriptor()).getFailMemes() : ((DescriptorImpl) getDescriptor()).getSuccessMemes(), build);
+            DescriptorImpl descriptorImpl = (DescriptorImpl) getDescriptor();
+            Meme meme = MemeFactory.getMeme(
+            		(res == Result.FAILURE) ? descriptorImpl.getFailMemes() : descriptorImpl.getSuccessMemes(),
+            		descriptorImpl.getAdditionalGlobalAttributes(),
+            		build);
 
             output.println("Meme: " + meme.getImageURL());
             if (((DescriptorImpl) getDescriptor()).isBuildDescriptionEnabled()) {
@@ -80,13 +84,13 @@ public class MemeNotifier extends Notifier {
     }
 
     private void addToBuildDescription(AbstractBuild build, Meme meme) throws IOException {
-        build.setDescription("<img class=\"meme-build\" src=\"" + meme.getImageURL() + "\" />");
+        build.setDescription("<img class=\"meme-build\" " + meme.getAdditionalAttributes() + " src=\"" + meme.getImageURL() + "\" />");
     }
 
     private void addToProjectDescription(AbstractProject proj, Meme meme) throws IOException {
         String desc = proj.getDescription();
         desc = desc.replaceAll("<img class=\"meme\"[^>]+>", "");
-        desc += "<img class=\"meme\" src=\"" + meme.getImageURL() + "\" />";
+        desc += "<img class=\"meme\" " + meme.getAdditionalAttributes() + " src=\"" + meme.getImageURL() + "\" />";
         proj.setDescription(desc);
     }
 
@@ -121,6 +125,7 @@ public class MemeNotifier extends Notifier {
     public static final class DescriptorImpl extends BuildStepDescriptor<Publisher> {
 
         public boolean buildDescriptionEnabled;
+        public String additionalGlobalAttributes;
 
         public ArrayList<Meme> smemes = new ArrayList<Meme>();
         public ArrayList<Meme> fmemes = new ArrayList<Meme>();
@@ -132,6 +137,10 @@ public class MemeNotifier extends Notifier {
 
         public boolean isBuildDescriptionEnabled() {
             return buildDescriptionEnabled;
+        }
+        
+        public String getAdditionalGlobalAttributes() {
+        	return additionalGlobalAttributes;
         }
 
         public ArrayList<Meme> getFailMemes() {
@@ -151,12 +160,12 @@ public class MemeNotifier extends Notifier {
         }
 
         private ArrayList<Meme> getDefaultSuccessMemes() {
-            smemes.add(new Meme(MemeList.getDefaultMeme(), "But when I do, I win", "I don't always commit"));
+            smemes.add(new Meme(MemeList.getDefaultMeme(), "But when I do, I win", "I don't always commit", ""));
             return smemes;
         }
 
         private ArrayList<Meme> getDefaultFailMemes() {
-            fmemes.add(new Meme(MemeList.getDefaultMeme(), "But when I do, I break the build", "I don't always commit"));
+            fmemes.add(new Meme(MemeList.getDefaultMeme(), "But when I do, I break the build", "I don't always commit", ""));
             return fmemes;
         }
 
@@ -182,6 +191,8 @@ public class MemeNotifier extends Notifier {
                 System.err.println("Build description is NOT enabled");
                 buildDescriptionEnabled = false;
             }
+            
+            additionalGlobalAttributes = req.getParameter("additionalGlobalAttributes");
 
             smemes.clear();
             for (Object data : getArray(json.get("smemes"))) {

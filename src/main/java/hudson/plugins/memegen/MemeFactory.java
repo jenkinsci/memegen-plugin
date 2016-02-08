@@ -23,16 +23,15 @@
  */
 package hudson.plugins.memegen;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Iterator;
+import java.util.Random;
+import java.util.Set;
+
 import hudson.model.AbstractBuild;
-import hudson.model.AbstractProject;
 import hudson.model.Result;
 import hudson.model.User;
-import java.util.ArrayList;
-import java.util.Set;
-import java.util.Iterator;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Random;
 
 class NoMemesException extends Exception {
 
@@ -47,14 +46,14 @@ class NoMemesException extends Exception {
  */
 public class MemeFactory {
 
-    public static Meme getMeme(ArrayList<Meme> memes, AbstractBuild build) throws NoMemesException {
-        String resultString = build.getResult().toString();
+    public static Meme getMeme(ArrayList<Meme> memes, String additionalAttributes, AbstractBuild build) throws NoMemesException {
         Meme meme = selectMeme(memes, build.getResult());
         String buildName = build.getDisplayName();
         String projectName = build.getProject().getDisplayName();
         String users = userSetToString(build.getCulprits());
         meme.lowerText = textReplace(meme.lowerText, buildName, projectName, users);
         meme.upperText = textReplace(meme.upperText, buildName, projectName, users);
+        meme.additionalAttributes = additionalAttributes;
         return meme;
     }
 
