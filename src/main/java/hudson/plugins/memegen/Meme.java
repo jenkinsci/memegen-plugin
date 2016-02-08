@@ -34,20 +34,27 @@ import org.kohsuke.stapler.DataBoundConstructor;
  */
 public class Meme implements Serializable {
 
-    protected int generatorID;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -7408263024860013752L;
+	
+	protected int generatorID;
     protected int imageID;
     protected boolean parsed = false;
     public String identifier;
     public String upperText;
     public String lowerText;
+    public String additionalAttributes;
 
     protected String imageURL;
 
     @DataBoundConstructor
-    public Meme(String identifier, String lowerText, String upperText) {
+    public Meme(String identifier, String lowerText, String upperText, String additionalAttributes) {
         this.identifier = identifier;
         this.upperText = upperText;
         this.lowerText = lowerText;
+        this.additionalAttributes = additionalAttributes;
     }
 
     public String getUpperText() {
@@ -61,9 +68,13 @@ public class Meme implements Serializable {
     public String getImageURL() {
         return "http://apimeme.com/meme?meme=" + identifier + "&top=" + encode(upperText) + "&bottom=" + encode(lowerText);
     }
+    
+    public String getAdditionalAttributes() {
+		return (additionalAttributes != null ? additionalAttributes : "");
+	}
 
     public Meme clone() {
-        return new Meme(identifier, lowerText, upperText);
+        return new Meme(identifier, lowerText, upperText, additionalAttributes);
     }
 
     private static String encode(String text) {
@@ -73,4 +84,5 @@ public class Meme implements Serializable {
             return text;
         }
     }
+
 }

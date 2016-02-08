@@ -16,6 +16,9 @@
 		<f:entry title="Add the memes to the build description" help="/plugin/memegen/help-buildDescriptionEnabled.html">
 			<f:checkbox name="buildDescriptionEnabled" checked="${descriptor.isBuildDescriptionEnabled()}"/>
 		</f:entry>
+		<f:entry title="Additional global HTML attributes for images" help="/plugin/memegen/help-additionalGlobalAttributes.html">
+			<f:textbox name="additionalGlobalAttributes" value="${descriptor.additionalGlobalAttributes}" />
+		</f:entry>
 		<f:entry title="Memes for successful builds">
 			<f:repeatable var="smeme" items="${descriptor.getSuccessMemes()}" name="smemes" add="Add Meme">
 				<table width="100%" style="border: 1px solid #aaa">
