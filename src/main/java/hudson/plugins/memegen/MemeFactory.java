@@ -83,7 +83,7 @@ public class MemeFactory {
                 "Monday",
                 "Tuesday",
                 "Wednesday",
-                "Thusday",
+                "Thursday",
                 "Friday",
                 "Saturday"
             };
