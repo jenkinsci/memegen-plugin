@@ -114,7 +114,7 @@ public class MemeFactory {
             idx++;
         }
         // Make sure last comma becomes an " and " if it exists
-        var ind = ret.lastIndexOf(",");
+        int ind = ret.lastIndexOf(",");
         if(ind != -1) {
             ret = ret.substring(0,ind) + " and" + ret.substring(ind + 1);
         }
