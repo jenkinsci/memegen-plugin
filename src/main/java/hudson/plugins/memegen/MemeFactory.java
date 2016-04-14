@@ -113,6 +113,11 @@ public class MemeFactory {
             ret += user.getDisplayName();
             idx++;
         }
+        // Make sure last comma becomes an " and " if it exists
+        int ind = ret.lastIndexOf(",");
+        if(ind != -1) {
+            ret = ret.substring(0,ind) + " and" + ret.substring(ind + 1);
+        }
         if (ret.isEmpty()) {
             ret = "Nobody";
         }
